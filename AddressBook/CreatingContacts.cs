@@ -16,37 +16,56 @@ namespace AddressBook
         {
             contacts contact = new contacts();
 
+            int Flag = 0;
             Console.WriteLine("Enter First Name : ");
             contact.FirstName = Console.ReadLine();
 
-            Console.WriteLine("Enter Last Name : ");
-            contact.LastName = Console.ReadLine();
 
-            Console.WriteLine("Enter Email : ");
-            contact.Email = Console.ReadLine();
+            string FirstNameToBeAdded = contact.FirstName;
+            foreach (var data in People)
+            {
+                if (People.Exists(data => data.FirstName == FirstNameToBeAdded))
+                {
+                    Flag++;
+                    Console.WriteLine("This FirstName already Exist! Can't take the Duplicate Record ");
+                    break;
+                }
 
-            Console.WriteLine("Enter Phone Number : ");
-            contact.PhoneNumber = Console.ReadLine();
+            }
+            if (Flag == 0)
+            {
 
-            Console.WriteLine("Enter Address : ");
-            contact.Address = Console.ReadLine();
+                Console.WriteLine("Enter Last Name : ");
+                contact.LastName = Console.ReadLine();
 
-            Console.WriteLine("Enter City : ");
-            contact.City = Console.ReadLine();
+                Console.WriteLine("Enter Email : ");
+                contact.Email = Console.ReadLine();
 
-            Console.WriteLine("Enter Zip : ");
-            contact.Zip = Console.ReadLine();
+                Console.WriteLine("Enter Phone Number : ");
+                contact.PhoneNumber = Console.ReadLine();
 
-            Console.WriteLine("Enter State : ");
-            contact.State = Console.ReadLine();
+                Console.WriteLine("Enter Address : ");
+                contact.Address = Console.ReadLine();
 
-            Console.WriteLine("\n");
+                Console.WriteLine("Enter City : ");
+                contact.City = Console.ReadLine();
+
+                Console.WriteLine("Enter Zip : ");
+                contact.Zip = Console.ReadLine();
+
+                Console.WriteLine("Enter State : ");
+                contact.State = Console.ReadLine();
+
+                Console.WriteLine("\n");
+
+
+            }
+
             People.Add(contact);
         }
 
 
-        public void EditDetails()
-
+        public void EditContacts()
         {
             Console.WriteLine("Enter the name to search : ");
             string name = Console.ReadLine();
@@ -59,10 +78,8 @@ namespace AddressBook
                 else if (data.FirstName == name)
                 {
                     Console.WriteLine("choose the option to change the data : \n1)FirstName\n2)LastName\n3)Email\n4)Phone Number\n5)Address\n6)City\n7)Zip\n8)State");
-
-                    int choose = Convert.ToInt32(Console.ReadLine());
-                    switch (choose)
-
+                    int choice = Convert.ToInt32(Console.ReadLine());
+                    switch (choice)
                     {
                         case 1:
                             Console.WriteLine("Please enter the First Name : ");
@@ -105,7 +122,7 @@ namespace AddressBook
                             data.Zip = Zip;
                             break;
                         default:
-                            Console.WriteLine(" Wrong input,Please choose from above options : ");
+                            Console.WriteLine(" Wrong input,please choose from above options :");
                             break;
                     }
 
@@ -115,7 +132,27 @@ namespace AddressBook
 
         }
 
-       
+        public void RemoveContact()
+        {
+            Console.WriteLine("Enter the name to search : ");
+            string name = Console.ReadLine();
+            foreach (var data in People)
+            {
+                if (data.FirstName == name)
+                {
+                    Console.WriteLine("given name contact exists");
+                    People.Remove(data);
+
+                    Console.WriteLine("contact deleted successfully");
+                    return;
+                }
+                else
+                {
+                    Console.WriteLine("given contact doesn't found");
+                }
+
+            }
+        }
 
         public void Addmultiplepersons(int n)
         {
@@ -147,8 +184,6 @@ namespace AddressBook
                         return;
                     }
                 }
-
-
             }
             Console.WriteLine("This contactlist doesn't exist, please creat a contactlist");
             return;
@@ -160,13 +195,11 @@ namespace AddressBook
         {
             Console.WriteLine("Enter the Uniquename of your contacts");
             string name = Console.ReadLine();
-
-
             foreach (var contacts in dict)
             {
+                //Console.WriteLine("The details of " + name + " are \n" + contacts.Value);
                 if (contacts.Key.Contains(name))
                 {
-
                     foreach (var contact in contacts.Value)
                     {
                         Console.WriteLine("The details of " + name + " are \n" + "Name: " + contact.FirstName + " " + contact.LastName + "\n" + "Email: " + contact.Email + "\n" +
@@ -178,37 +211,8 @@ namespace AddressBook
                 {
                     Console.WriteLine("this unique name doesn't exist");
                 }
-
             }
             Console.WriteLine("This Uniquelist doesn't exist, please creat a Uniquelist");
-        }
-
-        public void RemoveContact()
-        {
-            Console.WriteLine("Enter the name to search : ");
-            string name = Console.ReadLine();
-            try
-            {
-                foreach (var data in People)
-                {
-                    if (People.Contains(data))
-                    {
-                        if (data.FirstName == name)
-                        {
-                            Console.WriteLine("given name contact exists");
-                            People.Remove(data);
-
-                            Console.WriteLine("contact deleted successfully");
-                            return;
-                        }
-                    }
-                }
-                Console.WriteLine("given name contact does not exists");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
         }
 
 
@@ -221,8 +225,8 @@ namespace AddressBook
                 Console.WriteLine("Mobile Number : " + data.PhoneNumber);
                 Console.WriteLine("Address : " + data.Address);
                 Console.WriteLine("City : " + data.City);
+                Console.WriteLine("State : " + data.State);
                 Console.WriteLine("Zip : " + data.Zip);
-
                 Console.WriteLine("\n");
 
             }
