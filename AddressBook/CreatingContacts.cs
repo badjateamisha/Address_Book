@@ -10,6 +10,9 @@ namespace AddressBook
     {
         public List<contacts> People = new List<contacts>();
         public Dictionary<string, List<contacts>> dict = new Dictionary<string, List<contacts>>();
+        public Dictionary<string, List<contacts>> dictcity = new Dictionary<string, List<contacts>>();
+        public Dictionary<string, List<contacts>> dictstate = new Dictionary<string, List<contacts>>();
+
 
 
         public void Contacts()
@@ -65,7 +68,8 @@ namespace AddressBook
         }
 
 
-        public void EditContacts()
+        public void EditDetails()
+
         {
             Console.WriteLine("Enter the name to search : ");
             string name = Console.ReadLine();
@@ -78,8 +82,10 @@ namespace AddressBook
                 else if (data.FirstName == name)
                 {
                     Console.WriteLine("choose the option to change the data : \n1)FirstName\n2)LastName\n3)Email\n4)Phone Number\n5)Address\n6)City\n7)Zip\n8)State");
-                    int choice = Convert.ToInt32(Console.ReadLine());
-                    switch (choice)
+
+                    int choose = Convert.ToInt32(Console.ReadLine());
+                    switch (choose)
+
                     {
                         case 1:
                             Console.WriteLine("Please enter the First Name : ");
@@ -122,7 +128,7 @@ namespace AddressBook
                             data.Zip = Zip;
                             break;
                         default:
-                            Console.WriteLine(" Wrong input,please choose from above options :");
+                            Console.WriteLine(" Wrong input,Please choose from above options : ");
                             break;
                     }
 
@@ -132,27 +138,7 @@ namespace AddressBook
 
         }
 
-        public void RemoveContact()
-        {
-            Console.WriteLine("Enter the name to search : ");
-            string name = Console.ReadLine();
-            foreach (var data in People)
-            {
-                if (data.FirstName == name)
-                {
-                    Console.WriteLine("given name contact exists");
-                    People.Remove(data);
-
-                    Console.WriteLine("contact deleted successfully");
-                    return;
-                }
-                else
-                {
-                    Console.WriteLine("given contact doesn't found");
-                }
-
-            }
-        }
+        
 
         public void Addmultiplepersons(int n)
         {
@@ -216,6 +202,34 @@ namespace AddressBook
             Console.WriteLine("This Uniquelist doesn't exist, please creat a Uniquelist");
         }
 
+        public void RemoveContact()
+        {
+            Console.WriteLine("Enter the name to search : ");
+            string name = Console.ReadLine();
+            try
+            {
+                foreach (var data in People)
+                {
+                    if (People.Contains(data))
+                    {
+                        if (data.FirstName == name)
+                        {
+                            Console.WriteLine("given name contact exists");
+                            People.Remove(data);
+
+                            Console.WriteLine("contact deleted successfully");
+                            return;
+                        }
+                    }
+                }
+                Console.WriteLine("given name contact does not exists");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
 
         public void output()
         {
@@ -226,12 +240,13 @@ namespace AddressBook
                 Console.WriteLine("Mobile Number : " + data.PhoneNumber);
                 Console.WriteLine("Address : " + data.Address);
                 Console.WriteLine("City : " + data.City);
-                Console.WriteLine("State : " + data.State);
                 Console.WriteLine("Zip : " + data.Zip);
+
                 Console.WriteLine("\n");
 
             }
         }
+
 
 
         public void SearchByCityState()
@@ -255,6 +270,112 @@ namespace AddressBook
                     Console.WriteLine("\n");
                 }
 
+            }
+        }
+
+        public void CountByCityState()
+        {
+            Console.WriteLine("Please enter the name of City or State:");
+            string WantedCityOrState = Console.ReadLine();
+
+            int count = 0;
+            foreach (var data in People)
+            {
+                string actualcity = data.City;
+                string actualState = data.State;
+                if (People.Exists(data => (actualcity == WantedCityOrState || actualState == WantedCityOrState)))
+                {
+                    count++;
+                }
+            }
+            Console.WriteLine("There are {0} Persons in {1}:", count, WantedCityOrState);
+        }
+
+
+        public void ContactsBycity_dictionary()
+        {
+            try
+            {
+                var data = People.GroupBy(x => x.City);
+                foreach (var cities in data)
+                {
+                    List<contacts> cityList = new List<contacts>();
+                    foreach (var city in cities)
+                    {
+                        cityList.Add(city);
+                    }
+                    dictcity.Add(cities.Key, cityList);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        /// <summary>
+        /// view Contacts by Cities
+        /// </summary>
+        /// 
+
+
+        public void ContactsBystate_dictionary()
+        {
+
+            try
+            {
+                var data = People.GroupBy(x => x.State);
+                foreach (var states in data)
+                {
+                    List<contacts> Statelist = new List<contacts>();
+                    foreach (var State in states)
+                    {
+                        Statelist.Add(State);
+                    }
+                    dictstate.Add(states.Key, Statelist);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+
+        public void DisplayContactsByCities_Dictionary()
+        {
+            if (dictcity.Count == 0)
+                Console.WriteLine("No AddressBook(s) to Show.");
+            if (dictcity.Count >= 1)
+            {
+                foreach (KeyValuePair<string, List<contacts>> addressBooks in dictcity)
+                {
+                    Console.WriteLine("Contacts From City: " + addressBooks.Key);
+                    foreach (contacts items in addressBooks.Value)
+                    {
+                        Console.WriteLine($"Name: {items.FirstName + " " + items.LastName}, Phone Number: {items.PhoneNumber}, City: {items.City}, State: {items.State}" +
+                            $"\n Address: {items.Address}, Zipcode: {items.Zip}, Email: {items.Email}");
+                        Console.WriteLine();
+                    }
+                }
+            }
+        }
+
+        public void DisplayContactsByState_dictionary()
+        {
+            if (dictstate.Count == 0)
+                Console.WriteLine("No AddressBook(s) to Show.");
+            if (dictstate.Count >= 1)
+            {
+                foreach (KeyValuePair<string, List<contacts>> addressBooks in dictstate)
+                {
+                    Console.WriteLine("Contacts From State: " + addressBooks.Key);
+                    foreach (contacts items in addressBooks.Value)
+                    {
+                        Console.WriteLine($"Name: {items.FirstName + " " + items.LastName}, Phone Number: {items.PhoneNumber}, City: {items.City}, State: {items.State}" +
+                            $"\n Address: {items.Address}, Zipcode: {items.Zip}, Email: {items.Email}");
+                        Console.WriteLine();
+                    }
+                }
             }
         }
     }
