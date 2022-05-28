@@ -167,6 +167,7 @@ namespace AddressBook
         public void Adduniquecontacts()
         {
             Console.WriteLine("Enter the Firstname in your contactlist");
+
             string name = Console.ReadLine();
             foreach (var data in People)
             {
@@ -231,5 +232,31 @@ namespace AddressBook
 
             }
         }
+
+
+        public void SearchByCityState()
+        {
+            Console.WriteLine("Please enter the name of City or State:");
+
+            string WantedCityOrState = Console.ReadLine();
+            foreach (var data in People)
+            {
+                string actualcity = data.City;
+                string actualState = data.State;
+                if (People.Exists(data => (actualcity == WantedCityOrState || actualState == WantedCityOrState)))
+                {
+                    Console.WriteLine("Name of the Person : " + data.FirstName + " " + data.LastName);
+                    Console.WriteLine("Email ID : " + data.Email);
+                    Console.WriteLine("Mobile Number : " + data.PhoneNumber);
+                    Console.WriteLine("Address : " + data.Address);
+                    Console.WriteLine("City : " + data.City);
+                    Console.WriteLine("State : " + data.State);
+                    Console.WriteLine("Zip : " + data.Zip);
+                    Console.WriteLine("\n");
+                }
+
+            }
+        }
     }
+
 }
