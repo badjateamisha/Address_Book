@@ -68,8 +68,7 @@ namespace AddressBook
         }
 
 
-        public void EditDetails()
-
+        public void EditContacts()
         {
             Console.WriteLine("Enter the name to search : ");
             string name = Console.ReadLine();
@@ -82,10 +81,8 @@ namespace AddressBook
                 else if (data.FirstName == name)
                 {
                     Console.WriteLine("choose the option to change the data : \n1)FirstName\n2)LastName\n3)Email\n4)Phone Number\n5)Address\n6)City\n7)Zip\n8)State");
-
-                    int choose = Convert.ToInt32(Console.ReadLine());
-                    switch (choose)
-
+                    int choice = Convert.ToInt32(Console.ReadLine());
+                    switch (choice)
                     {
                         case 1:
                             Console.WriteLine("Please enter the First Name : ");
@@ -128,7 +125,7 @@ namespace AddressBook
                             data.Zip = Zip;
                             break;
                         default:
-                            Console.WriteLine(" Wrong input,Please choose from above options : ");
+                            Console.WriteLine(" Wrong input,please choose from above options :");
                             break;
                     }
 
@@ -138,7 +135,28 @@ namespace AddressBook
 
         }
 
-        
+        public void RemoveContact()
+        {
+            Console.WriteLine("Enter the name to search : ");
+            string name = Console.ReadLine();
+            foreach (var data in People)
+            {
+                if (data.FirstName == name)
+                {
+                    Console.WriteLine("given name contact exists");
+                    People.Remove(data);
+
+                    Console.WriteLine("contact deleted successfully");
+                    return;
+                }
+                else
+                {
+                    Console.WriteLine("given contact doesn't found");
+                }
+
+            }
+        }
+
         public void Addmultiplepersons(int n)
         {
             while (n > 0)
@@ -201,34 +219,6 @@ namespace AddressBook
             Console.WriteLine("This Uniquelist doesn't exist, please creat a Uniquelist");
         }
 
-        public void RemoveContact()
-        {
-            Console.WriteLine("Enter the name to search : ");
-            string name = Console.ReadLine();
-            try
-            {
-                foreach (var data in People)
-                {
-                    if (People.Contains(data))
-                    {
-                        if (data.FirstName == name)
-                        {
-                            Console.WriteLine("given name contact exists");
-                            People.Remove(data);
-
-                            Console.WriteLine("contact deleted successfully");
-                            return;
-                        }
-                    }
-                }
-                Console.WriteLine("given name contact does not exists");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }
-
 
         public void output()
         {
@@ -239,8 +229,8 @@ namespace AddressBook
                 Console.WriteLine("Mobile Number : " + data.PhoneNumber);
                 Console.WriteLine("Address : " + data.Address);
                 Console.WriteLine("City : " + data.City);
+                Console.WriteLine("State : " + data.State);
                 Console.WriteLine("Zip : " + data.Zip);
-
                 Console.WriteLine("\n");
 
             }
@@ -453,6 +443,63 @@ namespace AddressBook
 
             }
         }
+
+        string path = @"C:\Users\Admin\Desktop\Vishnu\AddressBook\AddressBook\ReadorWriteUsingFileIO.txt";
+
+        public void WriteInFileIO()
+        {
+            using (TextWriter sw = File.CreateText(path))
+            {
+                foreach (contacts item in People)
+                {
+                    Console.WriteLine("Writing the details in .txt File");
+                    Console.WriteLine("Details updated to the .txt file");
+                    sw.WriteLine("FirstName :" + item.FirstName.ToString());
+                    sw.WriteLine("lastName :" + item.LastName.ToString());
+                    sw.WriteLine("Email ID :" + item.Email.ToString());
+                    sw.WriteLine("Mobile Number :" + item.PhoneNumber.ToString());
+                    sw.WriteLine("City  :" + item.City.ToString());
+                    sw.WriteLine("State :" + item.State.ToString());
+                    sw.WriteLine("ZIP :" + item.Zip.ToString());
+                    Console.WriteLine("\n");
+
+                }
+            }
+        }
+
+
+        public void AppendInFileIO()
+        {
+
+            using (TextWriter Tw = File.AppendText(path))
+            {
+                foreach (contacts item in People)
+                {
+                    Console.WriteLine("Appending the new details to the Previous File");
+                    Tw.WriteLine("FirstName :" + item.FirstName.ToString());
+                    Tw.WriteLine("lastName :" + item.LastName.ToString());
+                    Tw.WriteLine("Email ID :" + item.Email.ToString());
+                    Tw.WriteLine("Mobile Number :" + item.PhoneNumber.ToString());
+                    Tw.WriteLine("City  :" + item.City.ToString());
+                    Tw.WriteLine("State :" + item.State.ToString());
+                    Tw.WriteLine("ZIP :" + item.Zip.ToString());
+                    Console.WriteLine("\n");
+
+
+                }
+            }
+        }
+
+
+
+        public void ReadFileIO()
+        {
+            string lines;
+
+            lines = File.ReadAllText(path);
+            Console.WriteLine("Reading All the Text" + lines);
+        }
+
     }
 
 }
