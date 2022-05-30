@@ -1,8 +1,12 @@
-﻿using System;
+﻿using CsvHelper;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+
 
 namespace AddressBook
 {
@@ -189,7 +193,7 @@ namespace AddressBook
                     }
                 }
             }
-            Console.WriteLine("This contactlist doesn't exist, please creat a contactlist");
+            Console.WriteLine("This contactlist doesn't exist, please create a contactlist");
             return;
 
         }
@@ -213,10 +217,10 @@ namespace AddressBook
                 }
                 else
                 {
-                    Console.WriteLine("this unique name doesn't exist");
+                    Console.WriteLine("This unique name doesn't exist");
                 }
             }
-            Console.WriteLine("This Uniquelist doesn't exist, please creat a Uniquelist");
+            Console.WriteLine("This Uniquelist doesn't exist, please creaet a Uniquelist");
         }
 
 
@@ -444,7 +448,8 @@ namespace AddressBook
             }
         }
 
-        string path = @"C:\Users\amisha\source\repos\Address_Book\AddressBook";
+
+        string path = @"C:\Users\amisha\source\repos\Address_Book\AddressBook\ReadOrWriteUsinfFileIO.txt";
 
         public void WriteInFileIO()
         {
@@ -499,7 +504,59 @@ namespace AddressBook
             lines = File.ReadAllText(path);
             Console.WriteLine("Reading All the Text" + lines);
         }
+        public static void WriteDataUsingCSV()
+        {
+            try
+            {
+                string Filepath = @"C:\Users\amisha\source\repos\Address_Book\AddressBook\csvfile.csv";
+
+                using (CsvWriter sw = new CsvWriter(new StreamWriter(Filepath), CultureInfo.InvariantCulture))
+                {
+                    sw.WriteHeader<contacts>();
+                    sw.WriteRecords("\n");
+                    sw.WriteRecords(People);
+                }
+            }
+            catch (FileNotFoundException f)
+            {
+                new Exception(f.FileName);
+            }
+        }
+        /// <summary>
+        /// Read Contact usng CSVReader
+        /// </summary>
+        public static void ReadDataUsingCSV()
+        {
+            try
+            {
+                string Filepath = @"C:\Users\amisha\source\repos\Address_Book\AddressBook\csvfile.csv";
+
+                using (CsvReader sw = new CsvReader(new StreamReader(Filepath), CultureInfo.InvariantCulture))
+                {
+                    var Record = sw.GetRecords<contacts>();
+                    foreach (var data in Record)
+                    {
+                        Console.WriteLine("*********Addressbook**********");
+                        Console.WriteLine(data.FirstName);
+                        Console.WriteLine(data.LastName);
+                        Console.WriteLine(data.Email);
+                        Console.WriteLine(data.Address);
+                        Console.WriteLine(data.City);
+                        Console.WriteLine(data.State);
+                        Console.WriteLine(data.Zip);
+                        Console.WriteLine("\n");
+                    }
+                }
+            }
+            catch (FileNotFoundException f)
+            {
+                new Exception(f.FileName);
+            }
+        }
 
     }
 
 }
+
+    
+
