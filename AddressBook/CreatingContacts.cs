@@ -1,5 +1,12 @@
 ﻿using CsvHelper;
 using System.Globalization;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.Json;
+using System.IO;
 
 
 namespace AddressBook
@@ -527,6 +534,35 @@ namespace AddressBook
                 Console.WriteLine(item.City.ToString());
                 Console.WriteLine(item.State.ToString());
                 Console.WriteLine(item.Zip.ToString());
+            }
+        }
+        public void WriteJson()
+        {
+            string json = @"C:\Users\amisha\source\repos\Address_Book\AddressBook\JsonFile.json";
+            foreach (Contacts item in People)
+            {
+                string json1 = JsonConvert.SerializeObject(People);
+                File.WriteAllText(json, json1);
+            }
+            Console.WriteLine("copied all data");
+        }
+
+        public void ReadJsonFile()
+        {
+            string json = @"C:\Users\amisha\source\repos\Address_Book\AddressBook\JsonFile.json";
+            string jsonData = File.ReadAllText(json);
+            var jsonResult = JsonConvert.DeserializeObject<List<Contacts>>(jsonData).ToList();
+            Console.WriteLine("Reading from Json file");
+            foreach (var data in jsonResult)
+            {
+                Console.WriteLine("Name of the Person : " + data.FirstName + " " + data.LastName);
+                Console.WriteLine("Email ID : " + data.Email);
+                Console.WriteLine("Mobile Number : " + data.PhoneNumber);
+                Console.WriteLine("Address : " + data.Address);
+                Console.WriteLine("City : " + data.City);
+                Console.WriteLine("State : " + data.State);
+                Console.WriteLine("Zip : " + data.Zip);
+                Console.WriteLine("\n");
             }
         }
 
