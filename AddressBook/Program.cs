@@ -11,7 +11,7 @@ while (true)
 {
     Console.WriteLine("\nEnter the number :\n1)Creating Contacts\n2)Edit Details\n3)Remove Contacts\n4)Adding multiple contacts\n5)Output Details\n6)Adding Unique Contacts\n7)Display unique contacts" +
         "\n8)Search Person by city or State\n9)Count Persons by city or State\n10)Contacts by city using Dictionary\n11)Contacts by State using Dictionary\n12)Sorting Details By FirstName\n13)Sorting " +
-        "Details By State\n14)Sorting Details By City\n15)Sorting Details By Zip\n16)Write File Using FileIO\n17)Append File Using FileIO\n18)Read File Using FileIO\n19)Write in CSV file\n20)Read from CSV file");
+        "Details By State\n14)Sorting Details By City\n15)Sorting Details By Zip\n16)Write File Using FileIO\n17)Append File Using FileIO\n18)Read File Using FileIO\n19)Write in CSV file\n20)Read from CSV file\n21)Updating Contacts to Json File\n22)Reading Contacts from Json File");
     int option = Convert.ToInt32(Console.ReadLine());
     switch (option)
     {
@@ -81,6 +81,12 @@ while (true)
             break;
         case 20:
             contact.ReadCsvFile();
+            break;
+        case 21:
+            contact.WriteJson();
+            break;
+        case 22:
+            contact.ReadJsonFile();
             break;
     }
 }
