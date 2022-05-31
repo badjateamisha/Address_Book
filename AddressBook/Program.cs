@@ -16,7 +16,7 @@ while (true)
     switch (option)
     {
         case 1:
-            contact.Contacts();
+            contact.Contact();
             break;
         case 2:
             contact.EditContacts();

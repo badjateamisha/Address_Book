@@ -1,27 +1,21 @@
 ﻿using CsvHelper;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 
 
 namespace AddressBook
 {
     public class CreatingContacts
     {
-        public List<contacts> People = new List<contacts>();
-        public Dictionary<string, List<contacts>> dict = new Dictionary<string, List<contacts>>();
-        public Dictionary<string, List<contacts>> dictcity = new Dictionary<string, List<contacts>>();
-        public Dictionary<string, List<contacts>> dictstate = new Dictionary<string, List<contacts>>();
+        public List<Contacts> People = new List<Contacts>();
+        public Dictionary<string, List<Contacts>> dict = new Dictionary<string, List<Contacts>>();
+        public Dictionary<string, List<Contacts>> dictcity = new Dictionary<string, List<Contacts>>();
+        public Dictionary<string, List<Contacts>> dictstate = new Dictionary<string, List<Contacts>>();
 
 
 
-        public void Contacts()
+        public void Contact()
         {
-            contacts contact = new contacts();
+            Contacts contact = new Contacts();
 
             int Flag = 0;
             Console.WriteLine("Enter First Name : ");
@@ -165,7 +159,7 @@ namespace AddressBook
         {
             while (n > 0)
             {
-                Contacts();
+                Contact();
                 n--;
             }
 
@@ -292,7 +286,7 @@ namespace AddressBook
                 var data = People.GroupBy(x => x.City);
                 foreach (var cities in data)
                 {
-                    List<contacts> cityList = new List<contacts>();
+                    List<Contacts> cityList = new List<Contacts>();
                     foreach (var city in cities)
                     {
                         cityList.Add(city);
@@ -314,7 +308,7 @@ namespace AddressBook
                 var data = People.GroupBy(x => x.State);
                 foreach (var states in data)
                 {
-                    List<contacts> Statelist = new List<contacts>();
+                    List<Contacts> Statelist = new List<Contacts>();
                     foreach (var State in states)
                     {
                         Statelist.Add(State);
@@ -335,10 +329,10 @@ namespace AddressBook
                 Console.WriteLine("No AddressBook(s) to Show.");
             if (dictcity.Count >= 1)
             {
-                foreach (KeyValuePair<string, List<contacts>> addressBooks in dictcity)
+                foreach (KeyValuePair<string, List<Contacts>> addressBooks in dictcity)
                 {
                     Console.WriteLine("Contacts From City: " + addressBooks.Key);
-                    foreach (contacts items in addressBooks.Value)
+                    foreach (Contacts items in addressBooks.Value)
                     {
                         Console.WriteLine($"Name: {items.FirstName + " " + items.LastName}, Phone Number: {items.PhoneNumber}, City: {items.City}, State: {items.State}" +
                             $"\n Address: {items.Address}, Zipcode: {items.Zip}, Email: {items.Email}");
@@ -354,10 +348,10 @@ namespace AddressBook
                 Console.WriteLine("No AddressBook(s) to Show.");
             if (dictstate.Count >= 1)
             {
-                foreach (KeyValuePair<string, List<contacts>> addressBooks in dictstate)
+                foreach (KeyValuePair<string, List<Contacts>> addressBooks in dictstate)
                 {
                     Console.WriteLine("Contacts From State: " + addressBooks.Key);
-                    foreach (contacts items in addressBooks.Value)
+                    foreach (Contacts items in addressBooks.Value)
                     {
                         Console.WriteLine($"Name: {items.FirstName + " " + items.LastName}, Phone Number: {items.PhoneNumber}, City: {items.City}, State: {items.State}" +
                             $"\n Address: {items.Address}, Zipcode: {items.Zip}, Email: {items.Email}");
@@ -449,13 +443,13 @@ namespace AddressBook
         }
 
 
-        string path = @"C:\Users\amisha\source\repos\Address_Book\AddressBook\ReadOrWriteUsinfFileIO.txt";
+        string path = @"C:\Users\amisha\source\repos\Address_Book\AddressBook\ReadOrWriteUsingFileIO.txt";
 
         public void WriteInFileIO()
         {
             using (TextWriter sw = File.CreateText(path))
             {
-                foreach (contacts item in People)
+                foreach (Contacts item in People)
                 {
                     Console.WriteLine("Writing the details in .txt File");
                     Console.WriteLine("Details updated to the .txt file");
@@ -478,7 +472,7 @@ namespace AddressBook
 
             using (TextWriter Tw = File.AppendText(path))
             {
-                foreach (contacts item in People)
+                foreach (Contacts item in People)
                 {
                     Console.WriteLine("Appending the new details to the Previous File");
                     Tw.WriteLine("FirstName :" + item.FirstName.ToString());
@@ -504,53 +498,35 @@ namespace AddressBook
             lines = File.ReadAllText(path);
             Console.WriteLine("Reading All the Text" + lines);
         }
-        public static void WriteDataUsingCSV()
+        public void WriteCsvFile()
         {
-            try
+            string csvPath = @"C:\Users\amisha\source\repos\Address_Book\AddressBook\csvfile.csv";
+            StreamWriter tw = new(csvPath);
+            using (var csvExport = new CsvWriter(tw, CultureInfo.InvariantCulture))
             {
-                string Filepath = @"C:\Users\amisha\source\repos\Address_Book\AddressBook\csvfile.csv";
+                csvExport.WriteRecords(People);
+            }
+            Console.WriteLine("People List is saved as Csv file");
 
-                using (CsvWriter sw = new CsvWriter(new StreamWriter(Filepath), CultureInfo.InvariantCulture))
-                {
-                    sw.WriteHeader<contacts>();
-                    sw.WriteRecords("\n");
-                    sw.WriteRecords(People);
-                }
-            }
-            catch (FileNotFoundException f)
-            {
-                new Exception(f.FileName);
-            }
         }
-        /// <summary>
-        /// Read Contact usng CSVReader
-        /// </summary>
-        public static void ReadDataUsingCSV()
+        public void ReadCsvFile()
         {
-            try
-            {
-                string Filepath = @"C:\Users\amisha\source\repos\Address_Book\AddressBook\csvfile.csv";
+            string csvPath = @"C:\Users\amisha\source\repos\Address_Book\AddressBook\csvfile.csv";
+            StreamReader sr = new(csvPath);
+            CsvReader cr = new(sr, CultureInfo.InvariantCulture);
+            List<Contacts> readResult = cr.GetRecords<Contacts>().ToList();
+            Console.WriteLine("Reading from CSV file");
 
-                using (CsvReader sw = new CsvReader(new StreamReader(Filepath), CultureInfo.InvariantCulture))
-                {
-                    var Record = sw.GetRecords<contacts>();
-                    foreach (var data in Record)
-                    {
-                        Console.WriteLine("*********Addressbook**********");
-                        Console.WriteLine(data.FirstName);
-                        Console.WriteLine(data.LastName);
-                        Console.WriteLine(data.Email);
-                        Console.WriteLine(data.Address);
-                        Console.WriteLine(data.City);
-                        Console.WriteLine(data.State);
-                        Console.WriteLine(data.Zip);
-                        Console.WriteLine("\n");
-                    }
-                }
-            }
-            catch (FileNotFoundException f)
+            foreach (var item in readResult)
             {
-                new Exception(f.FileName);
+                Console.WriteLine(item.FirstName.ToString());
+                Console.WriteLine(item.LastName.ToString());
+                Console.WriteLine(item.Email.ToString());
+                Console.WriteLine(item.PhoneNumber.ToString());
+                Console.WriteLine(item.Address.ToString());
+                Console.WriteLine(item.City.ToString());
+                Console.WriteLine(item.State.ToString());
+                Console.WriteLine(item.Zip.ToString());
             }
         }
 
@@ -558,5 +534,5 @@ namespace AddressBook
 
 }
 
-    
+
 

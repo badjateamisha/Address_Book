@@ -1,14 +1,21 @@
-﻿FirstName :Amisha
+FirstName :Amisha
 lastName :Jain
 Email ID :amisha@gmail.com
-Mobile Number :9100000019
-City  :Pune
-State :Maharashtra
-ZIP :411033
-FirstName :Aarvik
-lastName :Kalburgi
-Email ID :zxcvb
-Mobile Number :09876
-City  :Pune
+Mobile Number :123409876
+City  :pune
 State :MH
-ZIP :431001
+ZIP :12345
+FirstName :Aarvik 
+lastName :Kalburgi
+Email ID :aarvik@gmail.com
+Mobile Number :098354729
+City  :Abad
+State :Mh
+ZIP :41033
+FirstName :Sagar
+lastName :Kalburgi
+Email ID :sagar@yahoo.com
+Mobile Number :515151
+City  :Pune
+State :mh
+ZIP :58237
